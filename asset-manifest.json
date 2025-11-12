@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/kittofab/static/css/main.54f99f53.css",
-    "main.js": "/kittofab/static/js/main.9a2983c4.js",
+    "main.js": "/kittofab/static/js/main.520483fc.js",
     "static/js/453.85d843d8.chunk.js": "/kittofab/static/js/453.85d843d8.chunk.js",
     "index.html": "/kittofab/index.html",
     "main.54f99f53.css.map": "/kittofab/static/css/main.54f99f53.css.map",
-    "main.9a2983c4.js.map": "/kittofab/static/js/main.9a2983c4.js.map",
+    "main.520483fc.js.map": "/kittofab/static/js/main.520483fc.js.map",
     "453.85d843d8.chunk.js.map": "/kittofab/static/js/453.85d843d8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.54f99f53.css",
-    "static/js/main.9a2983c4.js"
+    "static/js/main.520483fc.js"
   ]
 }
