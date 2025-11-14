@@ -148,14 +148,14 @@ function Gallery() {
           <div className="hidden md:flex justify-center space-x-6 mt-6">
             <button
               onClick={scrollToPrev}
-              className="bg-primary/80 hover:bg-white rounded-full p-3 shadow-lg z-10 transition-all duration-200 hover:shadow-xl flex items-center justify-center w-12 h-12"
+              className="bg-[#04bfad]/80 hover:bg-white rounded-full p-3 shadow-lg z-10 transition-all duration-200 hover:shadow-xl flex items-center justify-center w-12 h-12"
               aria-label="Image précédente"
             >
               ←
             </button>
             <button
               onClick={scrollToNext}
-              className="bg-primary/80 hover:bg-white rounded-full p-3 shadow-lg z-10 transition-all duration-200 hover:shadow-xl flex items-center justify-center w-12 h-12"
+              className="bg-[#04bfad]/80 hover:bg-white rounded-full p-3 shadow-lg z-10 transition-all duration-200 hover:shadow-xl flex items-center justify-center w-12 h-12"
               aria-label="Image suivante"
             >
               →

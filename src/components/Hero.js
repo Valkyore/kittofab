@@ -16,7 +16,7 @@ function Hero() {
         />
 
         {/* Overlay : Sombre/neutre pour valoriser l'image */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/50 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/10 to-black/30" />
       </div>
 
       {/* Contenu Hero centré verticalement */}
