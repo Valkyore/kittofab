@@ -30,8 +30,8 @@ function Header() {
       </div>
       {mobileMenuOpen && (
         <nav className="md:hidden bg-white border-t">
-          <a href="#accueil" className="block px-6 py-3 text-[#04bfad] hover:text-[#80d2f2]">Accueil</a>
-          <a href="#fonctionnalites" className="block px-6 py-3 text-[#04bfad] hover:text-[#80d2f2]">Fonctionnalités</a>
+          <a href="#accueil" className="block px-6 py-3 font-semibold text-[#04bfad] hover:text-[#80d2f2]">Accueil</a>
+          <a href="#fonctionnalites" className="block px-6 py-3 font-semibold text-[#04bfad] hover:text-[#80d2f2]">Fonctionnalités</a>
           <a href="#produit" className="block px-6 py-3 font-semibold text-[#04bfad] hover:text-[#80d2f2]">Produit</a>
           <a href="#galerie" className="block px-6 py-3 font-semibold text-[#04bfad] hover:text-[#80d2f2]">Galerie</a>
           <a href="#contact" className="block px-6 py-3 font-semibold text-[#04bfad] hover:text-[#80d2f2]">Contact</a>
