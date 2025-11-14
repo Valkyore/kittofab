@@ -1,47 +1,26 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 function Hero() {
-  const iframeRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && iframeRef.current) {
-        iframeRef.current.src = iframeRef.current.dataset.src;
-        observer.unobserve(iframeRef.current);
-      }
-    });
-    if (iframeRef.current) observer.observe(iframeRef.current);
-  }, []);
+  const imgRef = useRef(null);
 
   return (
-    <section id="accueil" className="relative pt-20 overflow-hidden">
-      {/* Wrapper full-width pour la vidéo (inchangé) */}
-      <div className="absolute inset-x-0 top-0 -z-10">
-        <iframe
-          ref={iframeRef}
-          data-src="https://www.youtube.com/embed/1n2Z2YeKj7M?autoplay=1&mute=1&loop=1&playlist=1n2Z2YeKj7M&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&si=Xc1qJA62WeUz3sd8"
-          className="w-full h-[calc(100vh+20rem)] object-cover"
-          title="Vidéo de fond Hero"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-          style={{ pointerEvents: 'none' }}
-          referrerPolicy="strict-origin-when-cross-origin"
-        />
-
-        {/* Fallback image full-width */}
+    <section id="accueil" className="relative h-screen overflow-hidden flex items-center">
+      {/* Wrapper full-width et full-height pour l'image de fond */}
+      <div className="absolute inset-0 -z-10">
+        {/* Image de fond principale */}
         <img
-          src="https://images.unsplash.com/photo-1516321310764-9f3c93e4b7e5?w=1920&h=1080&fit=crop"
-          alt="Fond Hero Fallback"
-          className="w-full h-[calc(100vh+20rem)] object-cover hidden"
+          ref={imgRef}
+          src={process.env.PUBLIC_URL+"/images/1000031765bleu.jpg"}
+          alt="Fond Hero"
+          className="w-full h-full object-cover"
         />
 
-        {/* Overlay NEUF : Sombre/neutre pour valoriser la vidéo */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/50 to-black/70" /> {/* ← Gris foncé à noir, 50-70% opacité */}
+        {/* Overlay : Sombre/neutre pour valoriser l'image */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/50 to-black/70" />
       </div>
 
-      {/* Contenu Hero (inchangé) */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 text-center text-white">
+      {/* Contenu Hero centré verticalement */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full text-center text-white">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">
           Protégez votre capteur de glycémie avec son cache <span className="text-accent">en silicone</span>
         </h1>
@@ -64,8 +43,26 @@ function Hero() {
 export default Hero;
 
 
+/*
+        <iframe
+          ref={iframeRef}
+          data-src="https://www.youtube.com/embed/1n2Z2YeKj7M?autoplay=1&mute=1&loop=1&playlist=1n2Z2YeKj7M&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&si=Xc1qJA62WeUz3sd8"
+          className="w-full h-full object-cover"
+          title="Vidéo de fond Hero"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          style={{ pointerEvents: 'none' }}
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
 
-
+        {// Fallback image full-width et full-height //}
+        <img
+          src="https://images.unsplash.com/photo-1516321310764-9f3c93e4b7e5?w=1920&h=1080&fit=crop"
+          alt="Fond Hero Fallback"
+          className="w-full h-full object-cover hidden"
+        />
+*/ 
 
 
 

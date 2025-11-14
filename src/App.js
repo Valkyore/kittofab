@@ -9,14 +9,13 @@ import Gallery from './components/Gallery';
 
 function App() {
   return (
-    <div className="font-sans">
+    <div className="">
       <Header />
       <Hero />
       <Features />
       <Product />
       <Gallery />
       <Testimonials />
-      <Contact />
       <Footer />
     </div>
   );
