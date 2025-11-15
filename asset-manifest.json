@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/kittofab/static/css/main.275e5e11.css",
-    "main.js": "/kittofab/static/js/main.4882d58d.js",
-    "static/js/453.85d843d8.chunk.js": "/kittofab/static/js/453.85d843d8.chunk.js",
-    "index.html": "/kittofab/index.html",
-    "main.275e5e11.css.map": "/kittofab/static/css/main.275e5e11.css.map",
-    "main.4882d58d.js.map": "/kittofab/static/js/main.4882d58d.js.map",
-    "453.85d843d8.chunk.js.map": "/kittofab/static/js/453.85d843d8.chunk.js.map"
+    "main.css": "./static/css/main.275e5e11.css",
+    "main.js": "./static/js/main.23426801.js",
+    "static/js/453.85d843d8.chunk.js": "./static/js/453.85d843d8.chunk.js",
+    "index.html": "./index.html",
+    "main.275e5e11.css.map": "./static/css/main.275e5e11.css.map",
+    "main.23426801.js.map": "./static/js/main.23426801.js.map",
+    "453.85d843d8.chunk.js.map": "./static/js/453.85d843d8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.275e5e11.css",
-    "static/js/main.4882d58d.js"
+    "static/js/main.23426801.js"
   ]
 }
