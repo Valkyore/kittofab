@@ -26,7 +26,7 @@ function Product() {
           <div className="order-first md:order-none"> {/* Optionnel : pour inverser sur mobile si besoin */}
             <div className=" bg-gray-100 rounded-xl w-full h-96 flex items-center justify-center mb-6">
               <img
-                src={`${process.env.PUBLIC_URL}/images/_1530550.jpg`}
+                src={`${process.env.PUBLIC_URL}/images/7.JPG`}
                 alt="Protège-Capteur KittoFab"
                 className="max-w-full max-h-full object-cover rounded-lg"
               />
