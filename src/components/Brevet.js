@@ -87,7 +87,7 @@ function Brevet() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.90, ease: 'easeInOut' }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }} // Transition plus rapide (0.5s au lieu de 0.9s)
           />
         </AnimatePresence>
         {/* Overlay sombre pour lisibilité */}
