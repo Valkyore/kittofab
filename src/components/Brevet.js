@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function Brevet() {
@@ -11,7 +11,7 @@ function Brevet() {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Auto-transition fondu toutes les 5s
+  // Auto-transition fondu toutes les 5s (optimisé : deps seulement sur packagingImages.length)
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % packagingImages.length);
@@ -19,15 +19,15 @@ function Brevet() {
     return () => clearInterval(interval);
   }, [packagingImages.length]);
 
-  // Points vendeurs pour plus d'impact
-  const sellingPoints = [
+  // Points vendeurs memoïsés pour éviter re-renders inutiles
+  const sellingPoints = useMemo(() => [
     "🔒 Breveté et Unique au Monde",
     "💎 Une Innovation pour une Protection Inégalée",
     "🏥 Exclusivement pour les Pharmacies & les Entreprises Médicales",
     "⭐ Amélioration et Evolution pour le developpement de nouveau produits",
-  ];
+  ], []);
 
-  // Variants pour stagger sur les points vendeurs (déjà là, boosté)
+  // Variants constants (déjà optimisés)
   const sellingListVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
@@ -38,40 +38,45 @@ function Brevet() {
     visible: { x: 0, opacity: 1, transition: { duration: 0.5, ease: 'easeOut' } },
   };
 
-  // Variants pour stagger sur le titre (mots qui glissent de gauche à droite)
   const titleContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 0.2 }, // Délai 0.08s par mot, start après 0.2s
+      transition: { staggerChildren: 0.08, delayChildren: 0.2 },
     },
   };
 
   const wordVariants = {
-    hidden: { opacity: 0, x: -30 }, // Départ de gauche pour slide droite
+    hidden: { opacity: 0, x: -30 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: 'easeOut' } },
   };
 
-  // Helper pour animer le texte par caractères (effet écriture de gauche à droite)
-  const animateText = (text) => {
-    return text.split('').map((char, i) => (
-      <motion.span
-        key={i}
-        className="inline-block"
-        initial={{ opacity: 0, x: -10 }} // Départ de gauche pour slide droite
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.1, delay: i * 0.03 }} // Stagger 0.03s par char pour effet écriture fluide
-      >
-        {char === ' ' ? '\u00A0' : char} {/* Espace non-breaking pour éviter collapse */}
-      </motion.span>
-    ));
-  };
-
-  // Variants pour le paragraphe et points (slide-up simple)
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
   };
+
+  // Helper pour animer le texte par caractères (effet écriture) – memoïsé par texte pour perf
+  const animateText = useMemo(() => (text) => {
+    return text.split('').map((char, i) => (
+      <motion.span
+        key={i}
+        className="inline-block"
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.1, delay: i * 0.03 }}
+      >
+        {char === ' ' ? '\u00A0' : char}
+      </motion.span>
+    ));
+  }, []);
+
+  // Textes pré-calculés pour éviter re-split à chaque render
+  const titleText = useMemo(() => animateText('Notre Produit 100% Breveté'), [animateText]);
+  const para1Text = useMemo(() => animateText('GlycoSafe n\'est pas qu\'un produit : c\'est une innovation unique au monde qui protège vos capteurs avec élégance et efficacité.'), [animateText]);
+  const para2Text = useMemo(() => animateText('Conçu pour la vie active comme celle de tous les jours, nous collaborons exclusivement avec pharmacies et entreprises médicales pour une distribution simple, rapide et fiable.'), [animateText]);
+  const para3Text = useMemo(() => animateText('GlycoSafe evolue constament pour s\'adapter à la demande et aux nombreux modèle de capteur disponible sur le marché'), [animateText]);
+  const para4Text = useMemo(() => animateText('Transformez la routine en confiance absolue !'), [animateText]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -87,7 +92,7 @@ function Brevet() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }} // Transition plus rapide (0.5s au lieu de 0.9s)
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
           />
         </AnimatePresence>
         {/* Overlay sombre pour lisibilité */}
@@ -113,7 +118,7 @@ function Brevet() {
         className="relative z-10 max-w-4xl mx-auto text-center px-6 text-white"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }} // Déclenche au 30% visible
+        viewport={{ once: true, amount: 0.3 }}
         variants={contentVariants}
       >
         {/* Titre accrocheur avec glow et stagger mots (de gauche à droite) */}
@@ -121,7 +126,7 @@ function Brevet() {
           className="text-4xl md:text-6xl font-bold mb-8 drop-shadow-2xl"
           variants={titleContainerVariants}
         >
-          {animateText('Notre Produit 100% Breveté')} {/* Changé en animateText pour chars */}
+          {titleText}
         </motion.h2>
 
         {/* Points vendeurs animés (stagger pour dynamisme) */}
@@ -150,10 +155,10 @@ function Brevet() {
           className="text-xl leading-relaxed mb-8 opacity-90"
           variants={contentVariants}
         >
-          <span className="block mb-4">{animateText('GlycoSafe n\'est pas qu\'un produit : c\'est une innovation unique au monde qui protège vos capteurs avec élégance et efficacité.')}</span>
-          <span>{animateText('Conçu pour la vie active comme celle de tous les jours, nous collaborons exclusivement avec pharmacies et entreprises médicales pour une distribution simple, rapide et fiable.')}</span>
-                    <span className="block mt-4">{animateText('GlycoSafe evolue constament pour s\'adapter à la demande et aux nombreux modèle de capteur disponible sur le marché')}</span>
-          <span className="block mt-4">{animateText('Transformez la routine en confiance absolue !')}</span>
+          <span className="block mb-4">{para1Text}</span>
+          <span>{para2Text}</span>
+          <span className="block mt-4">{para3Text}</span>
+          <span className="block mt-4">{para4Text}</span>
         </motion.p>
       </motion.div>
     </section>
