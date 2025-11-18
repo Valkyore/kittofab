@@ -1,7 +1,46 @@
 import { useRef } from 'react';
+import { motion } from 'framer-motion';
 
 function Hero() {
   const imgRef = useRef(null);
+
+  // Variants pour stagger sur le titre (mots qui popent un par un)
+  const titleContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08, delayChildren: 0.2 }, // Délai 0.08s par mot, start après 0.2s
+    },
+  };
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  };
+
+  // Helper pour splitter le titre en mots avec accents
+  const splitTitle = (text, accentClass = '') => {
+    return text.split(' ').map((word, i) => (
+      <motion.span
+        key={i}
+        className={accentClass}
+        variants={wordVariants}
+      >
+        {word}{' '}
+      </motion.span>
+    ));
+  };
+
+  // Variants pour le paragraphe et boutons (stagger simple)
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  };
+
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, staggerChildren: 0.2 } },
+  };
 
   return (
     <section id="accueil" className="relative h-screen overflow-hidden flex items-center">
@@ -10,7 +49,7 @@ function Hero() {
         {/* Image de fond principale */}
         <img
           ref={imgRef}
-          src={process.env.PUBLIC_URL+"/images/1000031765bleu.jpg"}
+          src={process.env.PUBLIC_URL + "/images/1000031765bleu.jpg"}
           alt="Fond Hero"
           className="w-full h-full object-cover"
         />
@@ -20,22 +59,50 @@ function Hero() {
       </div>
 
       {/* Contenu Hero centré verticalement */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full text-center text-white">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">
-          Protégez votre capteur de glycémie avec son cache <span className="text-accent">en silicone</span>
-        </h1>
-        <p className="text-lg md:text-xl mb-10 max-w-3xl mx-auto">
+      <motion.div 
+        className="relative z-10 max-w-7xl mx-auto px-6 w-full text-center text-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }} // Déclenche au 30% visible
+        variants={contentVariants}
+      >
+        <motion.h1 
+          className="text-4xl md:text-6xl font-bold mb-6"
+          variants={titleContainerVariants}
+        >
+          {splitTitle('Protégez votre capteur de glycémie avec son cache')}
+          <span className="text-accent block md:inline">{splitTitle('en silicone', 'text-accent')}</span>
+        </motion.h1>
+        
+        <motion.p 
+          className="text-lg md:text-xl mb-10 max-w-3xl mx-auto"
+          variants={contentVariants}
+        >
           Souple, résistant, hypoallergénique. Conçu pour les diabétiques actifs.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#contact" className="bg-white text-primary px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition">
+        </motion.p>
+        
+        <motion.div 
+          className="flex flex-col sm:flex-row gap-4 justify-center"
+          variants={buttonVariants}
+        >
+          <motion.a 
+            href="#contact" 
+            className="bg-white text-primary px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition"
+            variants={wordVariants}
+            whileHover={{ scale: 1.05 }}
+          >
             Demander un devis
-          </a>
-          <a href="#produit" className="bg-transparent border-2 border-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-primary transition">
+          </motion.a>
+          <motion.a 
+            href="#produit" 
+            className="bg-transparent border-2 border-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-primary transition"
+            variants={wordVariants}
+            whileHover={{ scale: 1.05 }}
+          >
             Voir le produit
-          </a>
-        </div>
-      </div>
+          </motion.a>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

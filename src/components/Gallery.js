@@ -1,54 +1,69 @@
-import { useRef, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function Gallery() {
   const originalImages = [
     {
       src: `${process.env.PUBLIC_URL}/images/13.JPG`,
       alt: "Protège-capteur en silicone bleu, vue de face",
-      caption: "Vue frontale – Protection 360°"
+      caption: ""
     },
     {
       src: `${process.env.PUBLIC_URL}/images/5.JPG`,
       alt: "Protège-capteur porté au bras pendant le sport",
-      caption: "En action – Résistant à l'eau"
+      caption: ""
     },
     {
       src: `${process.env.PUBLIC_URL}/images/10.JPG`,
       alt: "Détail silicone médical, hypoallergénique",
-      caption: "Matériau premium – Silicone médical"
+      caption: ""
     },
     {
       src: `${process.env.PUBLIC_URL}/images/3.JPG`,
       alt: "Protège-capteur en plusieurs couleurs",
-      caption: "Personnalisation – 6 couleurs disponibles"
+      caption: ""
     },
     {
       src: `${process.env.PUBLIC_URL}/images/4.JPG`,
       alt: "Protège-capteur en plusieurs couleurs",
-      caption: "Personnalisation – 6 couleurs disponibles"
+      caption: ""
     },
     {
       src: `${process.env.PUBLIC_URL}/images/8.JPG`,
       alt: "Protège-capteur en plusieurs couleurs",
-      caption: "Personnalisation – 6 couleurs disponibles"
+      caption: ""
     },
     {
       src: `${process.env.PUBLIC_URL}/images/12.JPG`,
       alt: "Protège-capteur en plusieurs couleurs",
-      caption: "Personnalisation – 6 couleurs disponibles"
+      caption: ""
+    },
+        {
+      src: `${process.env.PUBLIC_URL}/images/BOITE16.jpg`,
+      alt: "Protège-capteur en plusieurs couleurs",
+      caption: ""
+    },
+        {
+      src: `${process.env.PUBLIC_URL}/images/BOITE32.jpg`,
+      alt: "Protège-capteur en plusieurs couleurs",
+      caption: ""
+    },
+        {
+      src: `${process.env.PUBLIC_URL}/images/BOITESVRAC.JPG`,
+      alt: "Protège-capteur en plusieurs couleurs",
+      caption: ""
     }
   ];
 
-  // Duplication pour la boucle infinie (mais on n'utilise que pour le rendu, sans reset brutal)
+  // Duplication pour la boucle infinie
   const fullImages = [...originalImages, ...originalImages];
 
   const ref = useRef(null);
   const scrollRef = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const [selectedImage, setSelectedImage] = useState(null); // État pour modal (desktop only)
 
-  // Calcul de la largeur d'une carte sur desktop (w-96 = 384px + space-x-8 = 32px)
-  const CARD_WIDTH = 384 + 32; // Ajuste si tu changes les classes Tailwind
+  // Calcul de la largeur d'une carte (responsive : full sur mobile, 384+32 sur desktop)
+  const CARD_WIDTH = window.innerWidth < 768 ? window.innerWidth : 384 + 32; // Dynamic pour mobile full-width
   const ORIGINAL_WIDTH = originalImages.length * CARD_WIDTH;
 
   const scrollToNext = () => {
@@ -63,30 +78,26 @@ function Gallery() {
     }
   };
 
-  // Gestion du scroll pour la boucle infinie – version plus smooth avec debounce et sans reset instantané
+  // Gestion du scroll pour la boucle infinie
   useEffect(() => {
     let timeoutId;
     const handleScroll = () => {
-      // Debounce pour éviter les appels trop fréquents
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         if (scrollRef.current) {
           let { scrollLeft } = scrollRef.current;
           const { scrollWidth, clientWidth } = scrollRef.current;
 
-          // Seuil plus précis pour la fin (juste avant la duplication visible)
-          const endThreshold = ORIGINAL_WIDTH - (CARD_WIDTH / 2); // Buffer pour anticiper
-          const startThreshold = CARD_WIDTH / 2; // Pour le début
+          const endThreshold = ORIGINAL_WIDTH - (CARD_WIDTH / 2);
+          const startThreshold = CARD_WIDTH / 2;
 
           if (scrollLeft >= endThreshold) {
-            // Reset smooth vers le début sans saut visible
             scrollRef.current.scrollLeft = scrollLeft - ORIGINAL_WIDTH;
           } else if (scrollLeft <= -startThreshold) {
-            // Reset vers la fin pour scroll arrière
             scrollRef.current.scrollLeft = scrollLeft + ORIGINAL_WIDTH;
           }
         }
-      }, 150); // Petit délai pour fluidité
+      }, 150);
     };
 
     const scrollElement = scrollRef.current;
@@ -97,12 +108,22 @@ function Gallery() {
         clearTimeout(timeoutId);
       };
     }
-  }, []);
+  }, [CARD_WIDTH, ORIGINAL_WIDTH]);
+
+  // Fermer modal au clic ou ESC
+  const closeModal = (e) => {
+    if (e.target === e.currentTarget || e.key === 'Escape') {
+      setSelectedImage(null);
+    }
+  };
+
+  // Condition pour desktop modal ( > 767px)
+  const isDesktop = window.innerWidth >= 768;
 
   return (
     <section ref={ref} id="galerie" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#04bfad]">Galerie : Découvrez KittoFab</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#04bfad]">Découvrez la gamme GlycoSafe</h2>
         <div className="relative overflow-hidden">
           {/* Conteneur principal pour l'overlap */}
           <div
@@ -113,15 +134,12 @@ function Gallery() {
               // Index original pour les animations (évite duplication visuelle des delays)
               const originalIndex = i % originalImages.length;
               return (
-                <motion.div
+                <div
                   key={`${i}`} // Key unique avec duplication
-                  className={`relative flex-shrink-0 w-80 md:w-96 snap-center transition-all duration-300 hover:scale-105 hover:z-10 group ${
+                  className={`relative flex-shrink-0 w-full md:w-80 md:w-96 snap-center transition-all duration-300 hover:scale-105 hover:z-10 group cursor-pointer ${
                     originalIndex % 2 === 0 ? 'mt-0' : 'mt-4 md:mt-8' // Offset alterné pour chevauchement
                   }`}
-                  initial={{ opacity: 0, x: 50, rotate: -5 }}  // État initial : invisible + décalé
-                  animate={isInView ? { opacity: 1, x: 0, rotate: 0 } : { opacity: 0, x: 50, rotate: -5 }} // Animation déclenchée seulement quand visible
-                  transition={{ duration: 0.6, delay: originalIndex * 0.2 }}  // Délai progressif (cascade) basé sur original
-                  whileHover={{ scale: 1.05, rotate: 5, transition: { duration: 0.2 } }}      // Hover smooth (bonus)
+                  onClick={() => isDesktop && setSelectedImage(img)} // Modal seulement sur desktop
                 >
                   {/* Card image avec overlap – inchangée */}
                   <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-gray-100 group-hover:shadow-2xl">
@@ -137,7 +155,7 @@ function Gallery() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -162,6 +180,53 @@ function Gallery() {
             </button>
           </div>
       </div>
+
+      {/* Modal pour zoom (desktop only) */}
+      <AnimatePresence>
+        {selectedImage && isDesktop && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeModal}
+            onKeyDown={closeModal}
+            tabIndex={-1}
+          >
+            <motion.img
+              src={selectedImage.src}
+              alt={selectedImage.alt}
+              className="max-w-full max-h-full object-contain rounded-lg"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            />
+            {/* Bouton close */}
+            <motion.button
+              className="absolute top-4 right-4 text-white text-3xl font-bold bg-black/50 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/70 transition-colors"
+              onClick={closeModal}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              ×
+            </motion.button>
+            {/* Caption en bas de modal si y'en a */}
+            {selectedImage.caption && (
+              <motion.div
+                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white p-3 rounded-lg max-w-md text-center"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 20, opacity: 0 }}
+              >
+                <p className="font-semibold text-sm">{selectedImage.caption}</p>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
