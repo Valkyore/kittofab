@@ -136,7 +136,7 @@ function Gallery() {
               return (
                 <div
                   key={`${i}`} // Key unique avec duplication
-                  className={`relative flex-shrink-0 w-full md:w-80 md:w-96 snap-center transition-all duration-300 hover:scale-105 hover:z-10 group cursor-pointer ${
+                  className={`relative flex-shrink-0 w-full md:w-80 snap-center transition-all duration-300 hover:scale-105 hover:z-10 group cursor-pointer ${
                     originalIndex % 2 === 0 ? 'mt-0' : 'mt-4 md:mt-8' // Offset alterné pour chevauchement
                   }`}
                   onClick={() => isDesktop && setSelectedImage(img)} // Modal seulement sur desktop
