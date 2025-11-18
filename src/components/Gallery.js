@@ -49,7 +49,7 @@ function Gallery() {
       caption: ""
     },
         {
-      src: `${process.env.PUBLIC_URL}/images/BOITESVRAC.JPG`,
+      src: `${process.env.PUBLIC_URL}/images/BOITESVRAC.jpg`,
       alt: "Protège-capteur en plusieurs couleurs",
       caption: ""
     }

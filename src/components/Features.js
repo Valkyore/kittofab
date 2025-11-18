@@ -3,15 +3,15 @@ import { motion } from 'framer-motion';
 
 function Features() {
   const features = [
-    { icon: "🛡️", title: "Protection 360°", desc: "Recouvre le capteur de façon ergonomique efficace" },
-    { icon: "💧", title: "Résistant à l'eau", desc: "Baignade, douche, sport, pluie" },
-    { icon: "🌿", title: "Matériaux premium", desc: "Silicone doux, spandex, sans BPA, Hypoallergénique, sans latex" },
-    { icon: "🔄", title: "Facile à nettoyer", desc: "et réutilisable" },
-    { icon: "🎨", title: "Divers choix de couleurs", desc: "Discret ou flashy, à votre style" },
-    { icon: "📶", title: "Ne bloque pas le signal", desc: "Aucune interférence avec le capteur" },
-    { icon: "🌬️", title: "Pas d'effet garrot", desc: "Confort sans constriction, circulation libre du sang grace à sa boucle ajustable" },
-    { icon: "☀️", title: "Pour toutes les saisons", desc: "Confort et adaptabilité toute l'année" },
-    { icon: "♻️", title: "Réutilisable", desc: "Compatibilité avec les capteurs FREESTYLE LIBRE 2 ET 2+, FREESTYLE SELECT" },
+    { icon: `${process.env.PUBLIC_URL}/images/shield.png`, title: "Protection 360°", desc: "Recouvre le capteur de façon ergonomique efficace" },
+    { icon: `${process.env.PUBLIC_URL}/images/drop.png`, title: "Résistant à l'eau", desc: "Baignade, douche, sport, pluie" },
+    { icon: `${process.env.PUBLIC_URL}/images/hand-rocks.png`, title: "Matériaux premium", desc: "Silicone doux, spandex, sans BPA, Hypoallergénique, sans latex" },
+    { icon: `${process.env.PUBLIC_URL}/images/water-bubble.png`, title: "Facile à nettoyer", desc: "et réutilisable" },
+    { icon: `${process.env.PUBLIC_URL}/images/palette-de-peinture.png`, title: "Divers choix de couleurs", desc: "Discret ou flashy, à votre style" },
+    { icon: `${process.env.PUBLIC_URL}/images/no-signal.png`, title: "Ne bloque pas le signal", desc: "Aucune interférence avec le capteur" },
+    { icon: `${process.env.PUBLIC_URL}/images/arm.png`, title: "Pas d'effet garrot", desc: "Confort sans constriction, circulation libre du sang grace à sa boucle ajustable" },
+    { icon: `${process.env.PUBLIC_URL}/images/lever-du-soleil.png`, title: "Pour toutes les saisons", desc: "Confort et adaptabilité toute l'année" },
+    { icon: `${process.env.PUBLIC_URL}/images/recycle.png`, title: "Réutilisable", desc: "Compatibilité avec les capteurs FREESTYLE LIBRE 2 ET 2+, FREESTYLE SELECT" },
   ];
 
   // Variants pour les effets hover (subtils et desktop-only via classes)
@@ -65,11 +65,15 @@ function Features() {
               whileHover="whileHover"
             >
               <motion.div 
-                className="text-5xl mb-4"
+                className="mb-4 relative z-10 mx-auto w-20 h-20"
                 variants={iconVariants}
                 whileHover="whileHover"
               >
-                {f.icon}
+                <img
+                  src={f.icon}
+                  alt=""
+                  className="w-full h-full object-contain"
+                />
               </motion.div>
               <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
               <p className="text-gray-600">{f.desc}</p>
@@ -77,7 +81,7 @@ function Features() {
           ))}
         </div>
 
-        {/* Version mobile : carousel horizontal swipeable infini (inchangé) */}
+        {/* Version mobile : carousel horizontal swipeable infini */}
         <div className="md:hidden">
           <Carousel features={features} />
         </div>
@@ -86,7 +90,7 @@ function Features() {
   );
 }
 
-// Composant séparé pour le carousel mobile infini (inchangé)
+// Composant séparé pour le carousel mobile infini
 function Carousel({ features }) {
   const numSlides = features.length;
   const duplicatedSlides = [...features, ...features]; // Duplication pour loop seamless
@@ -141,7 +145,13 @@ function Carousel({ features }) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="text-5xl mb-4">{f.icon}</div>
+            <div className="mb-4 relative z-10 mx-auto w-20 h-20">
+              <img
+                src={f.icon}
+                alt=""
+                className="w-full h-full object-contain"
+              />
+            </div>
             <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
             <p className="text-gray-600">{f.desc}</p>
           </motion.div>

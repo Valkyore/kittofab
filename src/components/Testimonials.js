@@ -7,7 +7,7 @@ function Testimonials() {
 
   return (
     <section 
-      className="py-20 mx-6 md:mx-0 rounded-3xl overflow-hidden relative" // Arrondi des coins + overflow pour clipper proprement
+      className="py-20 mx-6 md:mx-0 overflow-hidden relative" // Arrondi des coins + overflow pour clipper proprement
       style={{
         background: 'linear-gradient(to top, #80d2f2 0%, white 100%)' // Dégradé statique du bas (bleu clair) vers le haut (blanc)
       }}

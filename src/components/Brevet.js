@@ -19,12 +19,12 @@ function Brevet() {
     return () => clearInterval(interval);
   }, [packagingImages.length]);
 
-  // Points vendeurs memoïsés pour éviter re-renders inutiles
+  // Points vendeurs memoïsés – emojis remplacés par images
   const sellingPoints = useMemo(() => [
-    "🔒 Breveté et Unique au Monde",
-    "💎 Une Innovation pour une Protection Inégalée",
-    "🏥 Exclusivement pour les Pharmacies & les Entreprises Médicales",
-    "⭐ Amélioration et Evolution pour le developpement de nouveau produits",
+    { icon: `${process.env.PUBLIC_URL}/images/certificate.svg`, text: "Breveté et Unique au Monde" },
+    { icon: `${process.env.PUBLIC_URL}/images/innovation.svg`, text: "Une Innovation pour une Protection Inégalée" },
+    { icon: `${process.env.PUBLIC_URL}/images/hospital.svg`, text: "Exclusivement pour les Pharmacies & les Entreprises Médicales" },
+    { icon: `${process.env.PUBLIC_URL}/images/research.svg`, text: "Amélioration et Evolution pour le developpement de nouveau produits" },
   ], []);
 
   // Variants constants (déjà optimisés)
@@ -107,9 +107,9 @@ function Brevet() {
           <img
             src={`${process.env.PUBLIC_URL}/images/verifie.gif`}
             alt="Arrow Spin"
-            className="w-5 h-5 md:w-6 md:h-6 flex-shrink-0 object-contain"
+            className="w-5 h-5 md:w-6 md:h-6 flex-shrink-0 object-contain align-middle"
           />
-          BREVET EXCLUSIF
+          <span className="align-middle whitespace-nowrap">BREVET EXCLUSIF</span>
         </motion.div>
       </div>
 
@@ -144,8 +144,12 @@ function Brevet() {
               variants={sellingItemVariants}
               whileHover={{ scale: 1.05, backgroundColor: 'rgba(4, 191, 173, 0.2)' }}
             >
-              <span className="mr-3">{point.split(' ')[0]}</span>
-              <span className="font-semibold">{point.split(' ').slice(1).join(' ')}</span>
+              <img
+                src={point.icon}
+                alt=""
+                className="w-8 h-8 md:w-12 md:h-12 flex-shrink-0 object-contain mr-3" // Agrandi : w-8 h-8 mobile, w-10 h-10 desktop
+              />
+              <span className="font-semibold">{point.text}</span>
             </motion.li>
           ))}
         </motion.ul>
